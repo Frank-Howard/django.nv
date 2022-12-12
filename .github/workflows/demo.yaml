@@ -34,8 +34,12 @@ jobs:
   artifact:
     runs-on: ubuntu-20.04
     steps:
-      - run: echo "hello" > hello.txt
+      - name: Step 1 - create artifact
+        run: echo "hello" > hello.txt
+      
+      - name: Step 2 - upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: hello.txt
+          path: hello.txt 
     needs: [build, test, integration, prod]
-    with:
-      name: helloworld
-      path: hello.txt
