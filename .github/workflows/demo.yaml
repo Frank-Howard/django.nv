@@ -15,20 +15,27 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - run: echo "This is a test step"
+    needs: build
 
   integration:
     runs-on: ubuntu-20.04
     steps:
       - run: echo "This is an integration step"
       - run: exit 1
-    continue-on-error: true 
+    continue-on-error: true
+    needs: [build, test] 
 
   prod:
     runs-on: ubuntu-20.04
     steps:
       - run: echo "This is a deploy step"
+    needs: [build, test, integration]
 
   artifact:
     runs-on: ubuntu-20.04
     steps:
       - run: echo "hello" > hello.txt
+    needs: [build, test, integration, prod]
+    with:
+      name: helloworld
+      path: hello.txt
